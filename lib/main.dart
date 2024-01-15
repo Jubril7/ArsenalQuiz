@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quizzy/question.dart';
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp( const QuizApp());
@@ -44,28 +46,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreTracker = [];
 
-  // List<String> questions = [
-  //   'North London is red',
-  //   'Arsenal won the 22/23 EPL',
-  //   'Ben White is Arsenal\'s left back',
-  //   'Is Saliba is RR?'
-  // ];
-
-  // List<bool> answers = [
-  //   true,
-  //   false,
-  //   false,
-  //   true
-  // ];
-
-  // Question q1 = Question(q: 'North London is red', a: true);
-
-  List<Question> questionBank = [
-    Question(q: 'North London is red', a: true),
-    Question(q: 'Arsenal won the 22/23 EPL', a: false),
-    Question(q: 'Ben White is Arsenal\'s left back', a: false),
-    Question(q: 'Is Saliba is RR?', a: true),
-  ];
 
   int questionNumber = 0;
 
@@ -81,7 +61,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionBank[questionNumber].questionText,
+                quizBrain.questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 15.0,
@@ -106,7 +86,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool isCorrectAnswer = questionBank[questionNumber].questionAnswer;
+                bool isCorrectAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
 
                 if (isCorrectAnswer == true) {
                   print('you got it');
@@ -142,7 +122,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool isCorrectAnswer = questionBank[questionNumber].questionAnswer;
+                bool isCorrectAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
                 if (isCorrectAnswer == false) {
                   print('you got it');
                 } else {
