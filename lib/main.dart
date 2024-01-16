@@ -1,7 +1,9 @@
+
+
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 
-QuizBrain quizBrain = QuizBrain();
+// QuizBrain quizBrain = QuizBrain(context);
 
 void main() {
   runApp( const QuizApp());
@@ -44,10 +46,39 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+    late QuizBrain quizBrain;
+
+  @override
+  void initState() {
+    super.initState();
+    quizBrain = QuizBrain(context);
+  }
+
   List<Icon> scoreTracker = [];
 
+  void checkAnswer(bool picked) {
+    bool isCorrectAnswer = quizBrain.getAnswer();
 
-  int questionNumber = 0;
+    setState(() {
+      if (picked == isCorrectAnswer) {
+      scoreTracker.add(
+      const Icon(
+        Icons.check,
+        color: Colors.green,
+      ));
+    } else {   
+      scoreTracker.add(
+      const Icon(
+        Icons.close,
+        color: Colors.red,
+      ));
+    }
+    quizBrain.nextQuestionNumber();
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +92,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[questionNumber].questionText,
+                quizBrain.getQuestion(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 15.0,
@@ -86,23 +117,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool isCorrectAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
-
-                if (isCorrectAnswer == true) {
-                  print('you got it');
-                } else {
-                  print('you failed it');
-                }
-
-                setState(() {
-                  questionNumber++;
-                  scoreTracker.add(
-                    const Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ),
-                  );
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -122,22 +137,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool isCorrectAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
-                if (isCorrectAnswer == false) {
-                  print('you got it');
-                } else {
-                  print('you failed it');
-                }
-
-                setState(() {
-                  questionNumber++;
-                  scoreTracker.add(
-                    const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                  );
-                });
+              checkAnswer(false);
               },
             ),
           ),
